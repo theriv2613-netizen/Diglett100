@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diglett100</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:#0b1020;color:#fff}
+header{padding:18px 24px;background:#111936;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:2}
+.logo{font-size:28px;font-weight:900;color:#7c5cff}.tag{color:#aab3d6}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 24px;background:#0f1530;border-bottom:1px solid #27305a}
+nav button{border:0;background:#1b2448;color:#fff;padding:10px 15px;border-radius:10px;cursor:pointer}nav button.active{background:#7c5cff}
+main{max-width:1200px;margin:auto;padding:24px}.page{display:none}.page.active{display:block}
+h1{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
+.card{background:#151d3b;border:1px solid #29345f;border-radius:16px;padding:18px;min-height:130px}
+.card h3{margin:0 0 8px}.card p{color:#aab3d6;font-size:14px}.card a,.card button{display:inline-block;margin-top:8px;background:#7c5cff;color:white;border:0;border-radius:9px;padding:9px 12px;text-decoration:none;cursor:pointer}
+.search{display:flex;gap:8px;margin-bottom:18px}.search input{flex:1;padding:13px;border-radius:10px;border:1px solid #34406d;background:#0c1228;color:#fff;font-size:16px}
+iframe{width:100%;height:560px;border:1px solid #303b68;border-radius:15px;background:white}
+.notice{padding:12px 15px;background:#151d3b;border-radius:12px;color:#b9c2df;margin-bottom:15px}
+</style>
+</head>
+<body>
+<header><div><div class="logo">🟣 Diglett100</div><div class="tag">Games • Apps • Music • Movies • Web</div></div></header>
+<nav id="nav">
+<button data-page="games" class="active">🎮 Games</button><button data-page="browser">🌐 Browser</button>
+<button data-page="apps">📱 Apps</button><button data-page="music">🎵 Music</button><button data-page="movies">🎬 Movies</button>
+</nav>
+<main>
+<section id="games" class="page active">
+<h1>🎮 Popular Games</h1><div class="notice">Game links open the official game/service pages. Add more games by editing the list in the code.</div>
+<div class="grid" id="gamesGrid"></div>
+</section>
+
+<section id="browser" class="page">
+<h1>🌐 Diglett Browser</h1><div class="notice">Searches with DuckDuckGo. Some sites may block being displayed inside this page, so the button also opens the search in a new tab.</div>
+<div class="search"><input id="q" placeholder="Search the web with DuckDuckGo"><button onclick="searchDDG()">Search</button></div>
+<iframe id="browserFrame" title="DuckDuckGo"></iframe>
+</section>
+
+<section id="apps" class="page"><h1>📱 Apps</h1><div class="grid" id="appsGrid"></div></section>
+<section id="music" class="page"><h1>🎵 Music</h1><div class="grid" id="musicGrid"></div></section>
+<section id="movies" class="page"><h1>🎬 Movies & Shows</h1><div class="grid" id="moviesGrid"></div></section>
+</main>
+
+<script>
+const games=[
+["Fortnite","https://www.fortnite.com/","Battle royale & more"],
+["Roblox","https://www.roblox.com/","Games made by players"],
+["Minecraft","https://www.minecraft.net/","Build and explore"],
+["Rocket League","https://www.rocketleague.com/","Cars + soccer"],
+["Valorant","https://playvalorant.com/","Tactical shooter"],
+["League of Legends","https://www.leagueoflegends.com/","MOBA"],
+["Apex Legends","https://www.ea.com/games/apex-legends","Battle royale"],
+["Overwatch","https://overwatch.blizzard.com/","Team shooter"],
+["Fall Guys","https://www.fallguys.com/","Party platformer"],
+["Among Us","https://www.innersloth.com/games/among-us/","Social deduction"],
+["Genshin Impact","https://genshin.hoyoverse.com/","Open-world RPG"],
+["Warframe","https://www.warframe.com/","Online action"],
+["Destiny 2","https://www.bungie.net/7/en/Destiny","Online shooter"],
+["The Sims","https://www.ea.com/games/the-sims","Life simulation"],
+["Steam","https://store.steampowered.com/","PC game store"],
+["Epic Games Store","https://store.epicgames.com/","PC game store"]
+];
+const apps=[
+["YouTube","https://www.youtube.com/"],["Discord","https://discord.com/"],["Google","https://www.google.com/"],
+["DuckDuckGo","https://duckduckgo.com/"],["Twitch","https://www.twitch.tv/"],["Spotify","https://open.spotify.com/"],
+["Reddit","https://www.reddit.com/"],["Google Drive","https://drive.google.com/"],["Gmail","https://mail.google.com/"],
+["Canva","https://www.canva.com/"],["GitHub","https://github.com/"],["Google Maps","https://maps.google.com/"]
+];
+const music=[["Spotify","https://open.spotify.com/"],["YouTube Music","https://music.youtube.com/"],["SoundCloud","https://soundcloud.com/"],["BandLab","https://www.bandlab.com/"],["Apple Music","https://music.apple.com/"]];
+const movies=[["Netflix","https://www.netflix.com/"],["Disney+","https://www.disneyplus.com/"],["Hulu","https://www.hulu.com/"],["Prime Video","https://www.primevideo.com/"],["Max","https://www.max.com/"],["YouTube","https://www.youtube.com/"]];
+
+function cards(items,id,desc=false){document.getElementById(id).innerHTML=items.map(x=>`<div class="card"><h3>${x[0]}</h3>${desc?`<p>${x[2]}</p>`:""}<a href="${x[1]}" target="_blank" rel="noopener">Open</a></div>`).join("")}
+cards(games,"gamesGrid",true);cards(apps,"appsGrid");cards(music,"musicGrid");cards(movies,"moviesGrid");
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active")});
+function searchDDG(){const q=document.getElementById("q").value.trim();if(!q)return;const url="https://duckduckgo.com/?q="+encodeURIComponent(q);document.getElementById("browserFrame").src=url;window.open(url,"_blank","noopener")}
+document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")searchDDG()});
+document.getElementById("browserFrame").src="https://duckduckgo.com/";
+</script>
+</body></html>
